@@ -18,7 +18,7 @@ class StoresService {
     }
 
     getStore(id: number): Promise<Store> {
-        return fetch(baseUrl + id)
+        return fetch(baseUrl + "/" + id)
             .then((res) => res.json())
             .then((res) => res as Store);
     }

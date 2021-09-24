@@ -4,9 +4,10 @@
 	import type { Store } from "./Store.svelte";
 	import { storesService } from "./StoresService";
 
-	$: store = getStore(storeId);
+	let store = getStore(storeId);
 
 	async function getStore(id: number): Promise<Store> {
+		console.log("Yep in da place: " + id);
 		return storesService.getStore(id);
 	}
 </script>
@@ -18,7 +19,6 @@
 		<p>
 			Magasins id attendu {storeId} obtenu {result.id} et nom {result.name}
 		</p>
-		<p on:click={() => (storeId = -1)}>X</p>
 	{:catch error}
 		<p style="color: red">{error.message}</p>
 	{/await}
