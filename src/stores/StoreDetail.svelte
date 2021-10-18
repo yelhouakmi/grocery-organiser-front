@@ -1,13 +1,12 @@
 <script lang="ts">
 	export let storeId: number;
 
-	import type { Store } from "./Store.svelte";
+	import type { Store } from "./Store.js";
 	import { storesService } from "./StoresService";
 
 	let store = getStore(storeId);
 
 	async function getStore(id: number): Promise<Store> {
-		console.log("Yep in da place: " + id);
 		return storesService.getStore(id);
 	}
 </script>

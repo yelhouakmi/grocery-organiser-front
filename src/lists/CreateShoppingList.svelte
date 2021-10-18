@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { Store } from "./Store.js";
-    import { storesService } from "./StoresService.js";
+    import type { Store } from "./ShoppingList.js";
+    import { storesService } from "./ShoppingListService.js";
 
     let name: string;
 

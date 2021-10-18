@@ -1,11 +1,11 @@
 <script lang="ts">
 	import StoreDetail from "./StoreDetail.svelte";
-	import type { Store } from "./Store.svelte";
+	import type { Store } from "./Store.js";
 	import { storesService } from "./StoresService.js";
+import CreateStore from "./CreateStore.svelte";
 
 	let stores = getStores();
 	$: storeId = -1;
-	let displayedStore = 0;
 	const storeIdHeader = "store";
 
 	async function getStores(): Promise<Store[]> {
@@ -30,6 +30,7 @@
 				</li>
 			{/each}
 		</ul>
+		<CreateStore/>
 	{:catch error}
 		<p style="color: red">{error.message}</p>
 	{/await}

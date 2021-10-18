@@ -1,9 +1,9 @@
-import type { Store } from "./Store.svelte";
+import type { Store } from "./Store.js";
 
 var baseUrl = "http://localhost:8080/store";
 
 class StoresService {
-    createStore(store: Store): Promise<Response> {
+    async createStore(store: Store): Promise<Response> {
         return fetch(baseUrl, {
             method: "POST",
             body: JSON.stringify(store),
@@ -11,13 +11,13 @@ class StoresService {
         });
     }
 
-    getStores(): Promise<Store[]> {
+    async getStores(): Promise<Store[]> {
         return fetch(baseUrl)
             .then((res) => res.json())
             .then((res) => res as Store[]);
     }
 
-    getStore(id: number): Promise<Store> {
+    async getStore(id: number): Promise<Store> {
         return fetch(baseUrl + "/" + id)
             .then((res) => res.json())
             .then((res) => res as Store);
