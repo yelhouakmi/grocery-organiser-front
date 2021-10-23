@@ -11,17 +11,13 @@
 	}
 </script>
 
-<p>
-	{#await store}
-		<p>...Changement du magasin</p>
-	{:then result}
-		<p>
-			Magasins id attendu {storeId} obtenu {result.id} et nom {result.name}
-		</p>
-	{:catch error}
-		<p style="color: red">{error.message}</p>
-	{/await}
-</p>
+{#await store}
+...Changement du magasin
+{:then result}
+Magasins id attendu {storeId} obtenu {result.id} et nom {result.name}
+{:catch error}
+<p style="color: red">{error.message}</p>
+{/await}
 
 <style>
 </style>
