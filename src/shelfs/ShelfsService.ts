@@ -11,8 +11,8 @@ class ShelfsService {
         });
     }
 
-    async getShelfs(): Promise<Shelf[]> {
-        return fetch(baseUrl)
+    async getShelfsForStore(id: number): Promise<Shelf[]> {
+        return fetch(baseUrl + "/" + "?store=" + id)
             .then((res) => res.json())
             .then((res) => res as Shelf[]);
     }
@@ -21,6 +21,12 @@ class ShelfsService {
         return fetch(baseUrl + "/" + id)
             .then((res) => res.json())
             .then((res) => res as Shelf);
+    }
+
+    async deleteShelf(id: number): Promise<Response> {
+        return fetch(baseUrl + "/" + id, {
+            method: "DELETE",
+        });
     }
 }
 

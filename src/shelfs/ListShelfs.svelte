@@ -1,105 +1,48 @@
 <script lang="ts">
-	import StoreDetail from "./ShelfsDetail.svelte";
-	import type { Store } from "./Shelfs.js";
-	import { storesService } from "./ShelfsService.js";
-import CreateStore from "./CreateShelfs.svelte";
+	import type { Shelf } from "./Shelfs.js";
+	import { shelfsService } from "./ShelfsService.js";
+	import CreateShelf from "./CreateShelfs.svelte";
 
-	let stores = getStores();
-	$: storeId = -1;
+	export let storeId = 0;
+	$: shelfs = getShelfs(storeId);
 
-	async function getStores(): Promise<Store[]> {
-		return storesService.getStores();
+	async function getShelfs(id: number): Promise<Shelf[]> {
+		return shelfsService.getShelfsForStore(id);
 	}
-
-	let shelfs = getStores();
-	$: shelfId = -1;
-
-	async function getShelfs(): Promise<Store[]> {
-		return storesService.getStores();
+	async function deleteShelf(id: number): Promise<Response> {
+		return shelfsService.deleteShelf(id);
 	}
 </script>
 
 
-<div class="pagetitle">
-	<h1>Stores</h1>
-	<nav>
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-			<li class="breadcrumb-item active">Stores</li>
-		</ol>
-	</nav>
-</div><!-- End Page Title -->
-
-<section class="section">
-	<div class="row">
-	  <div class="col-lg-6">
-		{#await stores}
+<div class="card">
+	<div class="card-body">
+		<div class="row"><h1 class="col card-title">Shelfs</h1><i class="col-1 bi bi-plus-circle btn-add" data-bs-toggle="modal" data-bs-target="#newShelfModal"></i></div>
+		<div class="modal fade" id="newShelfModal" tabindex="-1" aria-hidden="true">
+			<CreateShelf {storeId}/>
+		</div>
+		{#await shelfs}
 			<p>...Changement des magasins</p>
-	    {:then results}
-			<div class="card">
-			<div class="card-body">
-				<!-- Accordion without outline borders -->
-				<div class="accordion accordion-flush" id="storesAccordion">
-				
-				{#each results as result}
-					<div class="accordion-item">
-						<h2 class="accordion-header" id="flush-headingOne">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-{result.id}" aria-expanded="false" aria-controls="flush-{result.id}" on:click={() => {storeId = result.id;}}>
-							{result.name}
-						</button>
-						</h2>
-						<div id="flush-{result.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#storesAccordion">
-						<div class="accordion-body">
-							{#if storeId === result.id}
-								<StoreDetail {storeId}/>
-							{/if}
-						</div>
-						</div>
-					</div>
-				{/each}
-				</div>
-			</div>
-			</div>
+		{:then results}
+			<table class="table table-dark table-borderless table-striped table-hover">
+				<tbody>
+					{#each results as result}
+						<tr>
+							<div class="row">
+								<td class="col">{result.name}</td>
+								<td class="col-1"><i class="bi bi-trash" on:click="{() => {deleteShelf(result.id) }}"></i></td>
+								<td class="col-1"><i class="bi bi-bookshelf"></i></td>
+								<td class="col-1"><i class="bi bi-basket-fill"></i></td>
+							</div>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
 		{:catch error}
 			<p style="color: red">{error.message}</p>
-	    {/await}
-	  </div>
-
-
-	  <div class="col-lg-6">
-		{#await stores}
-			<p>...Changement des Listes</p>
-	    {:then results}
-			<div class="card">
-			<div class="card-body">
-				<!-- Accordion without outline borders -->
-				<div class="accordion accordion-flush" id="storesAccordion">
-				
-				{#each results as result}
-					<div class="accordion-item">
-						<h2 class="accordion-header" id="flush-headingOne">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-{result.id}" aria-expanded="false" aria-controls="flush-{result.id}" on:click={() => {storeId = result.id;}}>
-							{result.name}
-						</button>
-						</h2>
-						<div id="flush-{result.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#storesAccordion">
-						<div class="accordion-body">
-							{#if storeId === result.id}
-								<StoreDetail {storeId}/>
-							{/if}
-						</div>
-						</div>
-					</div>
-				{/each}
-				</div>
-			</div>
-			</div>
-		{:catch error}
-			<p style="color: red">{error.message}</p>
-	    {/await}
-	  </div>
+		{/await}
 	</div>
-  </section>
+</div>
 
 <style>
 </style>

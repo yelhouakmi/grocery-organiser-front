@@ -22,6 +22,12 @@ class StoresService {
             .then((res) => res.json())
             .then((res) => res as Store);
     }
+    
+    async deleteStore(id: number): Promise<Response> {
+        return fetch(baseUrl + "/" + id, {
+            method: "DELETE",
+        });
+    }
 }
 
 const storesService = new StoresService();
