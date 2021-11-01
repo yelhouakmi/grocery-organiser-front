@@ -22,6 +22,12 @@ class ShoppingListService {
             .then((res) => res.json())
             .then((res) => res as ShoppingList);
     }
+
+    async delete(id: number): Promise<ShoppingList> {
+        return fetch(baseUrl + "/" + id)
+            .then((res) => res.json())
+            .then((res) => res as ShoppingList);
+    }
 }
 
 const shoppingListService = new ShoppingListService();

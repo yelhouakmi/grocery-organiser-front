@@ -1,16 +1,32 @@
 <script lang="ts">
-    import type { Store } from "./ShoppingList.js";
-    import { storesService } from "./ShoppingListService.js";
+	import { createEventDispatcher } from 'svelte';
 
+	import type { ShoppingList } from "./ShoppingList.js";
+	import { shoppingListService } from "./ShoppingListService.js";
+
+    const dispatch = createEventDispatcher();
     let name: string;
+    let storeId: number;
 
-    async function createStore() {
-        let newStore: Store = {id: null, name: name};
-        return storesService.createStore(newStore);
+    async function createList() {
+        let newList: ShoppingList = {id: null, name: name};
+        shoppingListService.create(newList)
+		                    .then(() => dispatch("listCreation"));
     }
 </script>
 
-<div>
-    <input bind:value={name}/>
-    <button on:click={createStore}>Créer le magasin</button>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Ajout de List</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input bind:value={name}/>
+            <input type=number bind:value={storeId}/>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" on:click={createList}>Créer la list</button>
+        </div>
+    </div>
 </div>

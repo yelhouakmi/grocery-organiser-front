@@ -1,7 +1,16 @@
 <script lang="ts">
-	import ListStores from "./stores/ListStores.svelte";
+	import StoresHome from "./stores/StoresHome.svelte";
+  import ListsHome from "./lists/ListsHome.svelte";
 
-	export let name: string;
+  let storesHome = true;
+
+  function displayStores() {
+    storesHome = true;
+  }
+
+  function displayLists() {
+    storesHome = false;
+  }
 </script>
 
   <!-- ======= Header ======= -->
@@ -21,25 +30,29 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
+        <div class="nav-link collapsed" on:click={displayStores}>
           <i class="bi bi-shop"></i>
           <span>Stores</span>
-        </a>
+        </div>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
+        <div class="nav-link collapsed" on:click={displayLists}>
           <i class="bi bi-card-checklist"></i>
           <span>Lists</span>
-        </a>
+        </div>
       </li><!-- End Dashboard Nav -->
     </ul>
 
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-	<ListStores/>
-</main>
+    {#if storesHome}
+	    <StoresHome/>
+    {:else}
+      <ListsHome/>
+    {/if}
+  </main>
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">

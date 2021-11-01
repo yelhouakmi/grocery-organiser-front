@@ -1,14 +1,18 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
     import type { Shelf } from "./Shelfs.js";
     import { shelfsService } from "./ShelfsService.js";
 
+    const dispatch = createEventDispatcher();
     let name: string;
     let position: number;
     export let storeId: number;
 
     async function createShelf() {
         let newshelf: Shelf = {id: null, name: name, position: position, storeId: storeId};
-        return shelfsService.createShelf(newshelf);
+		shelfsService.createShelf(newshelf)
+		                .then(() => dispatch("shelfCreation"));
     }
 </script>
 

@@ -1,5 +1,6 @@
 import type { Shelf } from "./Shelfs.js";
 
+var storeBaseUrl = "http://localhost:8080/store"
 var baseUrl = "http://localhost:8080/shelf";
 
 class ShelfsService {
@@ -12,7 +13,7 @@ class ShelfsService {
     }
 
     async getShelfsForStore(id: number): Promise<Shelf[]> {
-        return fetch(baseUrl + "/" + "?store=" + id)
+        return fetch(storeBaseUrl + "/" + id + "/shelf")
             .then((res) => res.json())
             .then((res) => res as Shelf[]);
     }

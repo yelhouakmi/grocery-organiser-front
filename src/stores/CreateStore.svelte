@@ -1,12 +1,16 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
     import type { Store } from "./Store.js";
     import { storesService } from "./StoresService.js";
 
+    const dispatch = createEventDispatcher();
     let name: string;
 
     async function createStore() {
         let newStore: Store = {id: null, name: name};
-        return storesService.createStore(newStore);
+        storesService.createStore(newStore)
+                        .then(() => dispatch("storeCreation"));
     }
 </script>
 
