@@ -4,12 +4,16 @@
 	import type { ShoppingList } from "./ShoppingList.js";
 	import { shoppingListService } from "./ShoppingListService.js";
 
+    import type { Store } from "../stores/Store"
+    import { storesService } from "../stores/StoresService"
+
     const dispatch = createEventDispatcher();
     let name: string;
     let storeId: number;
+    let stores = storesService.getStores();
 
     async function createList() {
-        let newList: ShoppingList = {id: null, name: name};
+        let newList: ShoppingList = {id: null, name: name, store_id: storeId};
         shoppingListService.create(newList)
 		                    .then(() => dispatch("listCreation"));
     }
@@ -23,10 +27,21 @@
         </div>
         <div class="modal-body">
             <input bind:value={name}/>
-            <input type=number bind:value={storeId}/>
+            <select type=number bind:value={storeId}>
+                {#await stores}
+                    <option value="0">Chargement</option>
+                {:then results}
+                    <option value="0">Store…</option>
+                    {#each results as store }
+                        <option value="{store.id}">{store.name}</option>
+                    {/each}
+                {:catch}
+                    <option value="0">Erreur</option>
+                {/await}
+              </select>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" on:click={createList}>Créer la list</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" on:click={createList} disabled={storeId == 0}>Créer la list</button>
         </div>
     </div>
 </div>

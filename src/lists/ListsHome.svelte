@@ -1,17 +1,10 @@
 <script lang="ts">
 	import ListShoppingLists from "./ListShoppingLists.svelte";
-	import ListShelfs from "../shelfs/ListShelfs.svelte"
-	import ListProduct from "../products/ListProducts.svelte"
+	import ShoppingListDetail from "./ShoppingListDetail.svelte"
 
-	let selectedStoreId: number;
-	function handleStoreSelection(event) {
-		selectedStoreId = event.detail.storeId;
-		selectedShelfId = null;
-	}
-
-	let selectedShelfId: number;
-	function handleShelfSelection(event) {
-		selectedShelfId = event.detail.shelfId;
+	let selectedListId: number;
+	function handleListSelection(event) {
+		selectedListId = event.detail.listId;
 	}
 </script>
 
@@ -29,18 +22,12 @@
 <section class="section">
 	<div class="row">
 		<div class="col-lg">
-			<ListShoppingLists on:storeSelection={handleStoreSelection}/>
+			<ListShoppingLists on:listSelection={handleListSelection}/>
 		</div>
 
-		{#if selectedStoreId}
+		{#if selectedListId}
 			<div class="col-lg">
-					<ListShelfs storeId={selectedStoreId} on:shelfSelection={handleShelfSelection}/>
-			</div>
-		{/if}
-
-		{#if selectedShelfId}
-			<div class="col-lg">
-					<ListProduct shelfId={selectedShelfId}/>
+					<ShoppingListDetail listId={selectedListId} />
 			</div>
 		{/if}
 	</div>

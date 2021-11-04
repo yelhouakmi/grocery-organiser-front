@@ -5,11 +5,14 @@
 	import { shoppingListService } from "./ShoppingListService.js";
 	import CreateShoppingList from "./CreateShoppingList.svelte"
 
+	import type { Store } from "../stores/Store"
+	import { storesService } from "../stores/StoresService"
+
 	const dispatch = createEventDispatcher();
 
 	let lists = getLists();
-	$: listId = -1;
-	const ListIdHeader = "list";
+	let stores: Store[];
+	storesService.getStores().then(storeList => stores = storeList);
 
 	async function getLists(): Promise<ShoppingList[]> {
 		return shoppingListService.getAll();
@@ -27,6 +30,20 @@
 	function updateLists() {
 		lists = getLists()
 	}
+
+	function getStoreName(id: number): String {
+		let result = "Inconnu";
+		// stores.forEach(store => {
+		// 	console.log("StoreId: " + store.id + "/" + id);
+		// 	if(store.id === id) {
+		// 		console.log("Yep");
+		// 		result = store.name;
+		// 		console.log(store.name + "/" + result);
+		// 	}
+		// });
+		console.log("Return: " + result);
+		return result;
+	}
 </script>
 
 <div class="card">
@@ -35,27 +52,26 @@
 		<div class="modal fade" id="newListModal" tabindex="-1" aria-hidden="true">
 			<CreateShoppingList on:listCreation={updateLists}/>
 		</div>
-			{#await lists}
-				<p>...Changement des Lists de course</p>
-			{:then results}
-				<table class="table table-dark table-borderless table-striped table-hover">
-					<tbody>
-						{#each results as result}
-							<tr>
-								<div class="row">
-									<td class="col">{result.name}</td>
-									<td class="col-1"><i class="bi bi-trash" on:click="{() => {deleteList(result.id) }}"></i></td>
-									<td class="col-1"><i class="bi bi-bookshelf" on:click="{() => selectList(result.id)}"></i></td>
-									<td class="col-1"><i class="bi bi-basket-fill"></i></td>
-								</div>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{:catch error}
-				<p style="color: red">{error.message}</p>
-			{/await}
-</div>
+		{#await lists}
+			<p>...Changement des Lists de course</p>
+		{:then results}
+			<table class="table table-dark table-borderless table-striped table-hover">
+				<tbody>
+					{#each results as shoppingList}
+						<tr>
+							<div class="row">
+								<td class="col">{shoppingList.name} ({getStoreName(shoppingList.store_id)})</td>
+								<td class="col-1"><i class="bi bi-trash" on:click="{() => {deleteList(shoppingList.id) }}"></i></td>
+								<td class="col-1"><i class="bi bi-basket-fill" on:click="{() => selectList(shoppingList.id)}"></i></td>
+							</div>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		{:catch error}
+			<p style="color: red">{error.message}</p>
+		{/await}
+	</div>
 </div>
 
 <style>

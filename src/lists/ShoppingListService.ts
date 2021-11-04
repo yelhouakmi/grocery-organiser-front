@@ -1,4 +1,4 @@
-import type { ShoppingList } from "./ShoppingList.js";
+import type { ShoppingList, ResponseListItem } from "./ShoppingList.js";
 
 var baseUrl = "http://localhost:8080/list";
 
@@ -27,6 +27,20 @@ class ShoppingListService {
         return fetch(baseUrl + "/" + id)
             .then((res) => res.json())
             .then((res) => res as ShoppingList);
+    }
+
+    async createNewItem(listId, ShoppingListItem): Promise<Response> {
+        return fetch(baseUrl + "/" + listId + "/item", {
+            method: "POST",
+            body: JSON.stringify(ShoppingListItem),
+            headers: { "Content-Type": "application/json" },
+        });
+    }
+
+    async getItemsByListId(id: number): Promise<ResponseListItem[]> {
+        const res = await fetch(baseUrl + "/" + id + "/item");
+        const res_1 = await res.json();
+        return res_1 as ResponseListItem[];
     }
 }
 
