@@ -13,7 +13,6 @@
 
     let productId: number;
     let quantity: number;
-    console.log(storeId + "/" + storeId);
 
     $: products = productsService.getProductsForStore(storeId);
 

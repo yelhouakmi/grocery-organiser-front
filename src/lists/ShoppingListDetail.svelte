@@ -22,7 +22,7 @@
 			if(shelfItemList) {
 				shelfItemList.items.push(item);
 			} else {
-				shelfItemMap.set(item.shelfName, {shelf: item.name, items: [item]});
+				shelfItemMap.set(item.shelfName, {shelf: item.shelfName, items: [item]});
 			}
 		})
 		shelfItemMap.forEach((value, key) => shelfItemsList.push(value));
