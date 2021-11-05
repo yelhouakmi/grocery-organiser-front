@@ -3,8 +3,10 @@
 	import ShoppingListDetail from "./ShoppingListDetail.svelte"
 
 	let selectedListId: number;
+	let selectedListStoreId: number;
 	function handleListSelection(event) {
 		selectedListId = event.detail.listId;
+		selectedListStoreId = event.detail.storeId;
 	}
 </script>
 
@@ -27,7 +29,7 @@
 
 		{#if selectedListId}
 			<div class="col-lg">
-					<ShoppingListDetail listId={selectedListId} />
+					<ShoppingListDetail listId={selectedListId} storeId={selectedListStoreId} />
 			</div>
 		{/if}
 	</div>

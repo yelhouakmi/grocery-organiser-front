@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	import type { ShoppingList } from "./ShoppingList.js";
+	import type { ResponseShoppingList } from "./ShoppingList.js";
 	import { shoppingListService } from "./ShoppingListService.js";
 	import CreateShoppingList from "./CreateShoppingList.svelte"
 
@@ -14,7 +14,7 @@
 	let stores: Store[];
 	storesService.getStores().then(storeList => stores = storeList);
 
-	async function getLists(): Promise<ShoppingList[]> {
+	async function getLists(): Promise<ResponseShoppingList[]> {
 		return shoppingListService.getAll();
 	}
 	
@@ -23,8 +23,8 @@
 						.then(updateLists);
 	}
 
-	function selectList(id: number) {
-		dispatch("listSelection",{listId: id})
+	function selectList(list: ResponseShoppingList) {
+		dispatch("listSelection",{listId: list.id, storeId: list.storeId})
 	}
 
 	function updateLists() {
@@ -60,9 +60,9 @@
 					{#each results as shoppingList}
 						<tr>
 							<div class="row">
-								<td class="col">{shoppingList.name} ({getStoreName(shoppingList.store_id)})</td>
+								<td class="col">{shoppingList.name} ({shoppingList.storeName})</td>
 								<td class="col-1"><i class="bi bi-trash" on:click="{() => {deleteList(shoppingList.id) }}"></i></td>
-								<td class="col-1"><i class="bi bi-basket-fill" on:click="{() => selectList(shoppingList.id)}"></i></td>
+								<td class="col-1"><i class="bi bi-basket-fill" on:click="{() => selectList(shoppingList)}"></i></td>
 							</div>
 						</tr>
 					{/each}

@@ -7,7 +7,7 @@
 	$: products = getProducts(shelfId);
 
 	async function getProducts(id: number): Promise<Product[]> {
-		return productsService.getProducts(id);
+		return productsService.getProductsForShelf(id);
 	}
 
 	function deleteProduct(id: number) {

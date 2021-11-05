@@ -1,5 +1,6 @@
 import type { Product } from "./Product.js";
 
+var storeBaseUrl = "http://localhost:8080/store"
 var shelfBaseUrl = "http://localhost:8080/shelf"
 var baseUrl = "http://localhost:8080/product";
 
@@ -12,8 +13,14 @@ class ProductsService {
         });
     }
 
-    async getProducts(shelfId: number): Promise<Product[]> {
+    async getProductsForShelf(shelfId: number): Promise<Product[]> {
         return fetch(shelfBaseUrl + "/" + shelfId + "/product")
+            .then((res) => res.json())
+            .then((res) => res as Product[]);
+    }
+
+    async getProductsForStore(storeId: number): Promise<Product[]> {
+        return fetch(storeBaseUrl + "/" + storeId + "/product")
             .then((res) => res.json())
             .then((res) => res as Product[]);
     }

@@ -1,22 +1,24 @@
 <script lang="ts">
+    export let listId: number;
+    export let storeId: number;
+
 	import { createEventDispatcher } from 'svelte';
 
 	import type { ShoppingListItem } from "./ShoppingList.js";
 	import { shoppingListService } from "./ShoppingListService.js";
 
-    import type { Product } from "../products/Product"
     import { productsService } from "../products/ProductsService"
 
     const dispatch = createEventDispatcher();
 
-    export let listId: number;
     let productId: number;
     let quantity: number;
+    console.log(storeId + "/" + storeId);
 
-    let products = productsService.getProducts(listId);
+    $: products = productsService.getProductsForStore(storeId);
 
     async function createListItem() {
-        let newListItem: ShoppingListItem = {list_id: listId, product_id: productId, quantity: quantity};
+        let newListItem: ShoppingListItem = {list_id: listId, productId: productId, quantity: quantity};
         shoppingListService.createNewItem(listId, newListItem)
 		                    .then(() => dispatch("listItemCreation"));
     }

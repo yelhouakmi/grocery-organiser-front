@@ -13,7 +13,7 @@
     let stores = storesService.getStores();
 
     async function createList() {
-        let newList: ShoppingList = {id: null, name: name, store_id: storeId};
+        let newList: ShoppingList = {id: null, name: name, storeId: storeId};
         shoppingListService.create(newList)
 		                    .then(() => dispatch("listCreation"));
     }

@@ -1,6 +1,7 @@
-import type { ShoppingList, ResponseListItem } from "./ShoppingList.js";
+import type { ShoppingList, ResponseShoppingList, ResponseListItem } from "./ShoppingList.js";
 
 var baseUrl = "http://localhost:8080/list";
+var itemBaseUrl = "http://localhost:8080/item";
 
 class ShoppingListService {
     async create(shoppingList: ShoppingList): Promise<Response> {
@@ -11,10 +12,10 @@ class ShoppingListService {
         });
     }
 
-    async getAll(): Promise<ShoppingList[]> {
+    async getAll(): Promise<ResponseShoppingList[]> {
         const res = await fetch(baseUrl);
         const res_1 = await res.json();
-        return res_1 as ShoppingList[];
+        return res_1 as ResponseShoppingList[];
     }
 
     async getbyId(id: number): Promise<ShoppingList> {
@@ -23,10 +24,10 @@ class ShoppingListService {
             .then((res) => res as ShoppingList);
     }
 
-    async delete(id: number): Promise<ShoppingList> {
-        return fetch(baseUrl + "/" + id)
-            .then((res) => res.json())
-            .then((res) => res as ShoppingList);
+    async delete(id: number): Promise<Response> {
+        return fetch(baseUrl + "/" + id, {
+            method: "DELETE",
+        });
     }
 
     async createNewItem(listId, ShoppingListItem): Promise<Response> {
@@ -41,6 +42,12 @@ class ShoppingListService {
         const res = await fetch(baseUrl + "/" + id + "/item");
         const res_1 = await res.json();
         return res_1 as ResponseListItem[];
+    }
+
+    async deleteItem(listId: number, productId: number): Promise<Response> {
+        return fetch(itemBaseUrl + "/" + productId, {
+            method: "DELETE",
+        });
     }
 }
 
